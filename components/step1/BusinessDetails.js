@@ -4,11 +4,15 @@ export default function BusinessDetails({
   next,
   back,
 }) {
+  const handleSave = () => {
+  localStorage.setItem("formData", JSON.stringify(formData));
+  next();
+};
   return (
-    <div>
+    <div className="w-[410px] space-y-5">
       
 
-      <label className="block mb-2 text-sm font-medium">
+      <label className="block text-[14px] font-medium text-gray-700 mb-1">
         VAT
       </label>
       <input
@@ -17,10 +21,13 @@ export default function BusinessDetails({
         onChange={(e) =>
           setFormData({ ...formData, vat_number: e.target.value })
         }
-        className="w-full border border-gray-300 p-3 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-[#4A3AFF]"
+        className="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 
+rounded-lg px-3 text-sm text-gray-700
+placeholder:text-gray-400
+focus:outline-none focus:ring-1 focus:ring-[#4A3AFF] mb-4"
       />
 
-      <label className="block mb-2 text-sm font-medium">
+      <label className="block text-[14px] font-medium text-gray-700 mb-1">
         Industry
       </label>
       <select
@@ -28,7 +35,10 @@ export default function BusinessDetails({
         onChange={(e) =>
           setFormData({ ...formData, industry: e.target.value })
         }
-        className="w-full border border-gray-300 p-3 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-[#4A3AFF]"
+        className="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 
+rounded-lg px-3 text-sm text-gray-700
+placeholder:text-gray-400
+focus:outline-none focus:ring-1 focus:ring-[#4A3AFF] mb-4"
       >
         <option value="">Please select your industry...</option>
         <option value="it">IT & Software</option>
@@ -37,7 +47,7 @@ export default function BusinessDetails({
         <option value="education">Education</option>
       </select>
 
-      <label className="block mb-2 text-sm font-medium">
+      <label className="block text-[14px] font-medium text-gray-700 mb-1">
         Organization website
       </label>
       <input
@@ -46,15 +56,18 @@ export default function BusinessDetails({
         onChange={(e) =>
           setFormData({ ...formData, website: e.target.value })
         }
-        className="w-full border border-gray-300 p-3 rounded mb-6 focus:outline-none focus:ring-2 focus:ring-[#4A3AFF]"
+        className="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 
+rounded-lg px-3 text-sm text-gray-700
+placeholder:text-gray-400
+focus:outline-none focus:ring-1 focus:ring-[#4A3AFF] mb-4"
       />
 
       <button
-        onClick={next}
-        className="w-full bg-[#4A3AFF] text-white py-3 rounded"
-      >
-        Continue →
-      </button>
+  onClick={handleSave}
+  className="w-full bg-[#4A3AFF] text-white py-3 rounded"
+>
+  Save →
+</button>
     </div>
   );
 }

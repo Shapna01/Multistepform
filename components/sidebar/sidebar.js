@@ -1,53 +1,51 @@
-export default function Sidebar({ step }) {
+export default function Sidebar({ step ,setStep}) {
   return (
-    <div className="w-1/3 bg-gray-50 p-6">
-      <p className={step === 1 ? "font-bold text-blue-600" : ""}>
-        1. Business Structure
-      </p>
-      <p className={step === 2 ? "font-bold text-blue-600" : ""}>
-        2. Bank Details
-      </p>
-      <p className={step === 3 ? "font-bold text-blue-600" : ""}>
-        3. 2 Step Auth
-      </p>
-      <p className={step === 4 ? "font-bold text-blue-600" : ""}>
-        4. Overview
-      </p>
-    </div>
-  );
-}export default function Sidebar({ step }) {
-  const steps = [
-    { id: 1, title: "Business structure", subtitle: "Business representative\nBusiness details" },
-    { id: 2, title: "Bank details" },
-    { id: 3, title: "2 step authentication" },
-    { id: 4, title: "Overview" }
-  ];
+    <div className="relative w-[300px] pl-12 pt-10">
+      <div className="absolute left-4 top-6 bottom-6 w-[2px] bg-gray-300"></div>
 
-  return (
-    <div className="w-64 pr-10">
-      {steps.map((s) => (
-        <div key={s.id} className="flex items-start gap-4 mb-8">
-          <div
-            className={`w-7 h-7 flex items-center justify-center rounded-full border 
-              ${step === s.id ? "bg-blue-600 text-white border-blue-600" : "text-gray-500 border-gray-300"}
-            `}
-          >
-            {s.id}
-          </div>
-
-          <div>
-            <p className={`${step === s.id ? "font-semibold text-black" : "text-gray-600"}`}>
-              {s.title}
-            </p>
-
-            {s.subtitle && (
-              <p className="text-xs text-gray-400 whitespace-pre-line leading-4">
-                {s.subtitle}
-              </p>
-            )}
-          </div>
+      <div className="relative flex items-start mb-10 cursor-pointer"
+  onClick={() => setStep(1)}>
+        <div className={`absolute left-0 w-8 h-8 flex items-center justify-center rounded-full border ${
+          step === 1 ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-500 border-gray-300"
+        }`}>
+          1
         </div>
-      ))}
+        <div className="ml-12">
+          <p className="font-semibold">Business structure</p>
+          <p className="text-sm text-gray-400">Business representative</p>
+          <p className="text-sm text-gray-400">Business details</p>
+        </div>
+      </div>
+
+      <div className="relative flex items-center mb-10 cursor-pointer"
+  onClick={() => setStep(2)}>
+        <div className={`absolute left-0 w-8 h-8 flex items-center justify-center rounded-full border ${
+          step === 2 ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-500 border-gray-300"
+        }`}>
+          2
+        </div>
+        <p className="ml-12 font-semibold">Bank details</p>
+      </div>
+
+      <div className="relative flex items-center mb-10 cursor-pointer"
+  onClick={() => setStep(3)}>
+        <div className={`absolute left-0 w-8 h-8 flex items-center justify-center rounded-full border ${
+          step === 3 ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-500 border-gray-300"
+        }`}>
+          3
+        </div>
+        <p className="ml-12 font-semibold">Account Holder Details</p>
+      </div>
+
+      <div className="relative flex items-center cursor-pointer"
+  onClick={() => setStep(4)}>
+        <div className={`absolute left-0 w-8 h-8 flex items-center justify-center rounded-full border ${
+          step === 4 ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-500 border-gray-300"
+        }`}>
+          4
+        </div>
+        <p className="ml-12 font-semibold">Overview</p>
+      </div>
     </div>
   );
 }

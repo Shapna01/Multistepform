@@ -1,23 +1,29 @@
 export default function BusinessStructureIntro({ formData, setFormData, next }) {
+  const handleSave = () => {
+  localStorage.setItem("formData", JSON.stringify(formData));
+  next();
+};
   return (
-    <div className="max-w-2xl">
+    <div className="w-[410px] space-y-5">
 
 
-      <label className="block mb-2 text-sm font-medium">Business address</label>
+      <label className="block text-[14px] font-medium text-gray-700 mb-1">Business address</label>
       <select
         value={formData.business_address || ""}
         onChange={(e) => setFormData({ ...formData, business_address: e.target.value })}
-        className="w-full h-12 border border-gray-300 px-3 rounded mb-6"
+        className="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 
+rounded-lg px-3 text-sm text-gray-500
+focus:outline-none focus:ring-1 focus:ring-[#4A3AFF] mb-4"
       >
         <option>Registered business address</option>
         <option value="operational">Operational address</option>
       </select>
 
-      <label className="block mb-2 text-sm font-medium">Type</label>
+      <label className="block text-[14px] font-medium text-gray-700 mb-1">Type</label>
       <select
         value={formData.business_type || ""}
         onChange={(e) => setFormData({ ...formData, business_type: e.target.value })}
-        className="w-full h-12 border border-gray-300 px-3 rounded mb-8"
+        className="w-full h-12 border border-gray-300 px-3 rounded mb-4"
       >
         <option>Type of business</option>
         <option value="individual">Individual</option>
@@ -25,44 +31,53 @@ export default function BusinessStructureIntro({ formData, setFormData, next }) 
         <option value="partnership">Partnership</option>
       </select>
 
-      {/* Address */}
-      <label className="block mb-2 text-sm font-medium">Address</label>
+      <label className="block text-[14px] font-medium text-gray-700 mb-1">Address</label>
 
       <input
         placeholder="Address line 1"
         value={formData.address_line1 || ""}
         onChange={(e) => setFormData({ ...formData, address_line1: e.target.value })}
-        className="w-full h-12 border border-gray-300 px-3 rounded mb-4"
+        className="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 
+rounded-lg px-3 text-sm text-gray-700
+placeholder:text-gray-400
+focus:outline-none focus:ring-1 focus:ring-[#4A3AFF] mb-3"
       />
 
       <input
         placeholder="Address line 2"
         value={formData.address_line2 || ""}
         onChange={(e) => setFormData({ ...formData, address_line2: e.target.value })}
-        className="w-full h-12 border border-gray-300 px-3 rounded mb-4"
+        className="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 
+rounded-lg px-3 text-sm text-gray-700
+placeholder:text-gray-400
+focus:outline-none focus:ring-1 focus:ring-[#4A3AFF] mb-3"
       />
 
       <input
         placeholder="City"
         value={formData.city || ""}
         onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-        className="w-full h-12 border border-gray-300 px-3 rounded mb-4"
+        className="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 
+rounded-lg px-3 text-sm text-gray-700
+placeholder:text-gray-400
+focus:outline-none focus:ring-1 focus:ring-[#4A3AFF] mb-3"
       />
 
       <input
         placeholder="Zip"
         value={formData.zip || ""}
         onChange={(e) => setFormData({ ...formData, zip: e.target.value })}
-        className="w-full h-12 border border-gray-300 px-3 rounded mb-8"
+        className="w-full h-12 border border-gray-300 px-3 rounded mb-4"
       />
 
-      {/* Button */}
       <button
-        onClick={next}
-        className="w-full h-12 bg-[#4A3AFF] text-white rounded text-center"
-      >
-        Continue →
-      </button>
+  onClick={handleSave}
+  className="w-full h-[44px] mt-2 bg-[#4A3AFF] 
+text-white text-sm font-medium rounded-lg 
+hover:bg-[#4338CA] transition"
+>
+  Save →
+</button>
     </div>
   );
 }

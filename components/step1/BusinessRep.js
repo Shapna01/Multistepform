@@ -4,9 +4,13 @@ export default function BusinessRep({
   next,
   back,
 }) {
+  const handleSave = () => {
+  localStorage.setItem("formData", JSON.stringify(formData));
+  next();
+};
   return (
-    <div>
-      <label className="block mb-2 text-sm font-medium">
+    <div className="w-[410px] space-y-5">
+      <label className="block text-[14px] font-medium text-gray-700 mb-1">
         Name
       </label>
 
@@ -17,7 +21,10 @@ export default function BusinessRep({
           onChange={(e) =>
             setFormData({ ...formData, first_name: e.target.value })
           }
-          className="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-[#4A3AFF]"
+          className="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 
+rounded-lg px-3 text-sm text-gray-700
+placeholder:text-gray-400
+focus:outline-none focus:ring-1 focus:ring-[#4A3AFF]"
         />
 
         <input
@@ -26,7 +33,10 @@ export default function BusinessRep({
           onChange={(e) =>
             setFormData({ ...formData, last_name: e.target.value })
           }
-          className="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-[#4A3AFF]"
+          className="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 
+rounded-lg px-3 text-sm text-gray-700
+placeholder:text-gray-400
+focus:outline-none focus:ring-1 focus:ring-[#4A3AFF]"
         />
       </div>
 
@@ -41,7 +51,10 @@ export default function BusinessRep({
         onChange={(e) =>
           setFormData({ ...formData, rep_email: e.target.value })
         }
-        className="w-full border border-gray-300 p-3 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-[#4A3AFF]"
+        className="w-full  h-[44px] bg-[#F9FAFB] border border-gray-200 
+rounded-lg px-3 text-sm text-gray-700
+placeholder:text-gray-400
+focus:outline-none focus:ring-1 focus:ring-[#4A3AFF] mb-4"
       />
 
       <label className="block mb-2 text-sm font-medium">
@@ -54,7 +67,10 @@ export default function BusinessRep({
         onChange={(e) =>
           setFormData({ ...formData, rep_address1: e.target.value })
         }
-        className="w-full border border-gray-300 p-3 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-[#4A3AFF]"
+        className="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 
+rounded-lg px-3 text-sm text-gray-700
+placeholder:text-gray-400
+focus:outline-none focus:ring-1 focus:ring-[#4A3AFF] mb-3"
       />
 
       <input
@@ -63,7 +79,10 @@ export default function BusinessRep({
         onChange={(e) =>
           setFormData({ ...formData, rep_address2: e.target.value })
         }
-        className="w-full border border-gray-300 p-3 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-[#4A3AFF]"
+        className="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 
+rounded-lg px-3 text-sm text-gray-700
+placeholder:text-gray-400
+focus:outline-none focus:ring-1 focus:ring-[#4A3AFF] mb-3"
       />
 
       <input
@@ -72,7 +91,10 @@ export default function BusinessRep({
         onChange={(e) =>
           setFormData({ ...formData, rep_city: e.target.value })
         }
-        className="w-full border border-gray-300 p-3 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-[#4A3AFF]"
+        className="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 
+rounded-lg px-3 text-sm text-gray-700
+placeholder:text-gray-400
+focus:outline-none focus:ring-1 focus:ring-[#4A3AFF] mb-3"
       />
 
       <input
@@ -81,7 +103,10 @@ export default function BusinessRep({
         onChange={(e) =>
           setFormData({ ...formData, rep_zip: e.target.value })
         }
-        className="w-full border border-gray-300 p-3 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-[#4A3AFF]"
+        className="w-full  h-[44px] bg-[#F9FAFB] border border-gray-200 
+rounded-lg px-3 text-sm text-gray-700
+placeholder:text-gray-400
+focus:outline-none focus:ring-1 focus:ring-[#4A3AFF] mb-4"
       />
 
       <label className="block mb-2 text-sm font-medium">
@@ -94,7 +119,9 @@ export default function BusinessRep({
           onChange={(e) =>
             setFormData({ ...formData, country_code: e.target.value })
           }
-          className="border border-gray-300 p-3 rounded w-[100px] focus:outline-none focus:ring-2 focus:ring-[#4A3AFF]"
+          className="h-[44px] bg-[#F9FAFB] border border-gray-200 
+rounded-lg px-2 text-sm focus:outline-none focus:ring-1 
+focus:ring-[#4A3AFF] w-[90px]border border-gray-300 p-3 rounded w-[100px] focus:outline-none focus:ring-2 focus:ring-[#4A3AFF]"
         >
           <option value="+353">+353</option>
           <option value="+1">+1</option>
@@ -107,16 +134,19 @@ export default function BusinessRep({
           onChange={(e) =>
             setFormData({ ...formData, phone: e.target.value })
           }
-          className="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-[#4A3AFF]"
+          className="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 
+rounded-lg px-3 text-sm text-gray-700
+placeholder:text-gray-400
+focus:outline-none focus:ring-1 focus:ring-[#4A3AFF]"
         />
       </div>
 
       <button
-        onClick={next}
-        className="w-full bg-[#4A3AFF] text-white py-3 rounded"
-      >
-        Continue →
-      </button>
+  onClick={handleSave}
+  className="w-full bg-[#4A3AFF] text-white py-3 rounded"
+>
+  Save →
+</button>
     </div>
   );
 }
