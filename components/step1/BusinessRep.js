@@ -1,10 +1,50 @@
+import { useState } from "react";
 export default function BusinessRep({
+  
   formData,
   setFormData,
   next,
   back,
 }) {
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+  let err = {};
+
+  if (!formData.last_name?.trim()) {
+  err.last_name = "Required";
+} else if (formData.last_name.trim().length > 3) {
+  err.last_name = "Max 3 characters allowed";
+}
+
+
+  if (!formData.rep_email?.trim()) {
+    err.rep_email = "Email required";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.rep_email)) {
+    err.rep_email = "Invalid email";
+  }
+
+  if (!formData.rep_address1?.trim()) {
+    err.rep_address1 = "Required";
+  }
+
+  if (!formData.rep_zip?.trim()) {
+    err.rep_zip = "Required";
+  } else if (!/^\d{6}$/.test(formData.rep_zip)) {
+    err.rep_zip = "Must be 6 digits";
+  }
+  
+  if (!formData.phone?.trim()) {
+  err.phone = "Required";
+  } else if (!/^\d{10}$/.test(formData.phone)) {
+  err.phone = "Must be exactly 10 digits";
+  }
+  setErrors(err);
+  return Object.keys(err).length === 0;
+};
   const handleSave = () => {
+  if (!validate()) return;
+
   localStorage.setItem("formData", JSON.stringify(formData));
   next();
 };
@@ -38,6 +78,7 @@ rounded-lg px-3 text-sm text-gray-700
 placeholder:text-gray-400
 focus:outline-none focus:ring-1 focus:ring-[#4A3AFF]"
         />
+        {errors.last_name && <p className="text-red-500 text-xs">{errors.last_name}</p>}
       </div>
 
       <label className="block mb-2 text-sm font-medium">
@@ -56,6 +97,7 @@ rounded-lg px-3 text-sm text-gray-700
 placeholder:text-gray-400
 focus:outline-none focus:ring-1 focus:ring-[#4A3AFF] mb-4"
       />
+      {errors.rep_email && <p className="text-red-500 text-xs">{errors.rep_email}</p>}
 
       <label className="block mb-2 text-sm font-medium">
         Address
@@ -72,6 +114,7 @@ rounded-lg px-3 text-sm text-gray-700
 placeholder:text-gray-400
 focus:outline-none focus:ring-1 focus:ring-[#4A3AFF] mb-3"
       />
+      {errors.rep_address1 && <p className="text-red-500 text-xs">{errors.rep_address1}</p>}
 
       <input
         placeholder="Address line 2"
@@ -108,6 +151,7 @@ rounded-lg px-3 text-sm text-gray-700
 placeholder:text-gray-400
 focus:outline-none focus:ring-1 focus:ring-[#4A3AFF] mb-4"
       />
+      {errors.rep_zip && <p className="text-red-500 text-xs">{errors.rep_zip}</p>}
 
       <label className="block mb-2 text-sm font-medium">
         Phone
@@ -132,13 +176,18 @@ focus:ring-[#4A3AFF] w-[90px]border border-gray-300 p-3 rounded w-[100px] focus:
           placeholder="+1 (555) 000-0000"
           value={formData.phone || ""}
           onChange={(e) =>
-            setFormData({ ...formData, phone: e.target.value })
-          }
+          setFormData({
+          ...formData,
+          phone: e.target.value.replace(/\D/g, "").slice(0, 10)
+        })
+} 
+
           className="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 
 rounded-lg px-3 text-sm text-gray-700
 placeholder:text-gray-400
 focus:outline-none focus:ring-1 focus:ring-[#4A3AFF]"
         />
+        {errors.phone && <p className="text-red-500 text-xs">{errors.phone}</p>}
       </div>
 
       <button

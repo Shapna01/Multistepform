@@ -1,7 +1,36 @@
+import { useState } from "react";
 export default function BusinessStructureIntro({ formData, setFormData, next }) {
+  const [errors, setErrors] = useState({});
+  const validate = () => {
+  let err = {};
+
+  if (!formData.address_line1?.trim()) {
+    err.address_line1 = "Required";
+  }
+
+  if (!formData.zip?.trim()) {
+  err.zip = "Required";
+} else if (formData.zip.trim().length !== 6 || isNaN(formData.zip)) {
+  err.zip = "Must be 6 digits";
+}
+
+  setErrors(err);
+  return Object.keys(err).length === 0;
+};
+
   const handleSave = () => {
-  localStorage.setItem("formData", JSON.stringify(formData));
-  next();
+  try {
+    if (!validate()) return;
+
+    localStorage.setItem("formData", JSON.stringify(formData));
+
+    next();
+
+  } catch (error) {
+    console.error("Error while saving form:", error);
+
+    alert("Something went wrong. Please try again.");
+  }
 };
   return (
     <div className="w-[410px] space-y-5">
@@ -42,7 +71,7 @@ rounded-lg px-3 text-sm text-gray-700
 placeholder:text-gray-400
 focus:outline-none focus:ring-1 focus:ring-[#4A3AFF] mb-3"
       />
-
+{errors.address_line1 && <p className="text-red-500 text-xs">{errors.address_line1}</p>}
       <input
         placeholder="Address line 2"
         value={formData.address_line2 || ""}
@@ -69,6 +98,7 @@ focus:outline-none focus:ring-1 focus:ring-[#4A3AFF] mb-3"
         onChange={(e) => setFormData({ ...formData, zip: e.target.value })}
         className="w-full h-12 border border-gray-300 px-3 rounded mb-4"
       />
+      {errors.zip && <p className="text-red-500 text-xs">{errors.zip}</p>}
 
       <button
   onClick={handleSave}

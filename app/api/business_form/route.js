@@ -16,7 +16,7 @@ export async function POST(req) {
     const result = await pool.query(
       `INSERT INTO users(
         first_name, last_name, email, phone,
-        vat_number, industry, website,
+        pan_number, industry, website,
         currency, bank_country, iban
       )
       VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
@@ -26,12 +26,12 @@ export async function POST(req) {
         body.last_name || "",
         body.rep_email || "",
         body.phone || "",
-        body.vat_number || "",
+        body.pan_number || "",
         body.industry || "",
-        body.website || "",
+        body.website || "", 
         body.currency || "",
         body.bank_country || "",
-        body.iban || "",
+        body.pin || "",
       ]
     );
 

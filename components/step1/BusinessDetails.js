@@ -1,10 +1,26 @@
+import { useState } from "react";
 export default function BusinessDetails({
   formData,
   setFormData,
   next,
   back,
 }) {
+
+  const [errors, setErrors] = useState({});
+  const validate = () => {
+  let err = {};
+
+  if (!formData.pan_number?.trim()) {
+    err.pan_number = "PAN is required";
+  }
+
+  setErrors(err);
+  return Object.keys(err).length === 0;
+};
+
   const handleSave = () => {
+  if (!validate()) return;
+
   localStorage.setItem("formData", JSON.stringify(formData));
   next();
 };
@@ -13,20 +29,22 @@ export default function BusinessDetails({
       
 
       <label className="block text-[14px] font-medium text-gray-700 mb-1">
-        VAT
+        PAN
       </label>
       <input
-        placeholder="VAT number"
-        value={formData.vat_number || ""}
+        placeholder="PAN number"
+        value={formData.pan_number || ""}
         onChange={(e) =>
-          setFormData({ ...formData, vat_number: e.target.value })
+          setFormData({ ...formData, pan_number: e.target.value })
         }
         className="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 
 rounded-lg px-3 text-sm text-gray-700
 placeholder:text-gray-400
 focus:outline-none focus:ring-1 focus:ring-[#4A3AFF] mb-4"
       />
-
+{errors.pan_number && (
+  <p className="text-red-500 text-xs">{errors.pan_number}</p>
+)}
       <label className="block text-[14px] font-medium text-gray-700 mb-1">
         Industry
       </label>

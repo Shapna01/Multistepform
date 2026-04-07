@@ -6,7 +6,15 @@ export default function Overview({ formData, goToStep }) {
     formData.first_name &&
     formData.rep_email;
 
-  const isBankComplete = formData.iban;
+  const isBankComplete =
+  formData.account_holder_name &&
+  formData.account_number &&
+  formData.bank_name &&
+  formData.currency &&
+  formData.bank_country &&
+  formData.pin &&
+  formData.confirm_pin &&
+  formData.pin === formData.confirm_pin;
 
   const isAuthComplete = true;
 
@@ -36,16 +44,23 @@ export default function Overview({ formData, goToStep }) {
       body: JSON.stringify(payload),
     });
 
-    const data = await res.json();
+    let data;
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error("Invalid server response");
+    }
 
     if (!res.ok) {
-      alert("Error ❌");
-      return;
+      throw new Error(data?.message || "Failed to save");
     }
 
     alert("Saved successfully ✅");
+
   } catch (error) {
-    alert("Server error ❌");
+    console.error("Submit error:", error.message);
+
+    alert(error.message || "Server error ❌");
   }
 };
   return (
@@ -84,7 +99,7 @@ export default function Overview({ formData, goToStep }) {
           <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs bg-green-500">
             ✓
           </div>
-          <p className="text-sm">2 step authentication</p>
+          <p className="text-sm">Account Holder Details</p>
         </div>
       </div>
 

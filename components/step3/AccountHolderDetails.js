@@ -1,96 +1,192 @@
 "use client";
+import { useState } from "react";
 
-export default function BankDetails({ formData, setFormData, next }) {
-  const handleNext = () => {
-    if (!formData.account_holder_name) return alert("Please enter account holder name");
-    if (!formData.account_number) return alert("Please enter account number");
-    if (!formData.bank_name) return alert("Please enter bank name");
-    if (!formData.currency) return alert("Please select currency");
-    if (!formData.bank_country) return alert("Please select bank country");
-    if (!formData.iban) return alert("Please enter IBAN");
-    if (formData.iban !== formData.confirm_iban) return alert("IBAN does not match");
-    next();
-  };
+export default function AccountHolderDetails({ formData, setFormData, next, back }) {
+  const [errors, setErrors] = useState({});
+  const validate = () => {
+  let err = {};
+
+  if (!formData.user_fullname?.trim()) {
+    err.user_fullname = "Required";
+  }
+
+   if (!formData.user_email?.trim()) {
+    err.user_email = "Required";
+  } else if (!formData.user_email.includes("@") || !formData.user_email.includes(".")) {
+    err.user_email = "Invalid email";
+  }
+
+  if (!formData.user_phone?.trim()) {
+    err.user_phone = "Required";
+  } else if (formData.user_phone.replace(/\D/g, "").length !== 10) {
+    err.user_phone = "Must be 10 digits";
+  }
+
+
+  if (!formData.user_role) {
+    err.user_role = "Required";
+  }
+
+  if (!formData.terms_1) {
+    err.terms_1 = "Required";
+  }
+
+  if (!formData.terms_2) {
+    err.terms_2 = "Required";
+  }
+
+  if (!formData.terms_3) {
+    err.terms_3 = "Required";
+  }
+
+  setErrors(err);
+  return Object.keys(err).length === 0;
+};
 
   const handleSave = () => {
+  try {
+    if (!validate()) return;
+    console.log("Form Data:", formData); 
     localStorage.setItem("formData", JSON.stringify(formData));
+
     next();
-  };
 
-  const inputClass ="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 rounded-lg px-3 text-sm text-gray-500 focus:outline-none focus:ring-1 focus:ring-[#4A3AFF]";
+  } catch (error) {
+    console.error("Error saving account holder details:", error);
 
+    alert("Something went wrong. Please try again.");
+  }
+};
   return (
-    <div className="w-[410px] space-y-5">
-      <label className="block text-sm font-medium">Account Holder Name</label>
+    <div className="w-[420px] space-y-8">
+
+      <p className="text-sm text-gray-500">
+        Please provide your personal details and accept the agreements.
+      </p>
+
+      <div className="space-y-5">
+
+        <div>
+          <label className="text-sm font-medium">Full Name</label>
+          <input
+  className={`w-full h-[44px] bg-[#F9FAFB] border rounded-lg px-3 text-sm
+    ${errors.user_fullname ? "border-red-500" : "border-gray-200"}
+  `}
+  value={formData.user_fullname || ""}
+  onChange={(e) => {
+    setFormData({ ...formData, user_fullname: e.target.value });
+    setErrors((prev) => ({ ...prev, user_fullname: "" }));
+  }}
+/>
+          {errors.user_fullname && <p className="text-red-500 text-xs">{errors.user_fullname}</p>}
+        </div>
+
+        <div>
+          <label className="text-sm font-medium">Email address</label>
+          <input
+            type="email"
+            className="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 rounded-lg px-3 text-sm text-gray-500 focus:outline-none focus:ring-1 focus:ring-[#4A3AFF]"
+            value={formData.user_email || ""}
+            onChange={(e) =>
+              setFormData({ ...formData, user_email: e.target.value })
+            }
+          />
+          {errors.user_email && <p className="text-red-500 text-xs">{errors.user_email}</p>}
+        </div>
+
+        <div>
+          <label className="text-sm font-medium">Phone number</label>
+          <input
+            className="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 rounded-lg px-3 text-sm text-gray-500 focus:outline-none focus:ring-1 focus:ring-[#4A3AFF]"
+            value={formData.user_phone || ""}
+            onChange={(e) =>
+              setFormData({ ...formData, user_phone: e.target.value })
+            }
+          />
+          {errors.user_phone && <p className="text-red-500 text-xs">{errors.user_phone}</p>}
+        </div>
+
+        <div>
+          <label className="text-sm font-medium">Role</label>
+          <select
+            className="w-full h-[44px] bg-[#F9FAFB] border border-gray-200 rounded-lg px-3 text-sm text-gray-500 focus:outline-none focus:ring-1 focus:ring-[#4A3AFF]"
+            value={formData.user_role || ""}
+            onChange={(e) =>
+              setFormData({ ...formData, user_role: e.target.value })
+            }
+          >
+            <option value="">Select role</option>
+            <option value="Owner">Owner</option>
+            <option value="Manager">Manager</option>
+            <option value="Accountant">Accountant</option>
+          </select>
+          {errors.user_role && <p className="text-red-500 text-xs">{errors.user_role}</p>}
+        </div>
+
+      </div>
+
+     <div className="space-y-4">
+  <h3 className="text-lg font-medium">Agreements</h3>
+
+  <div>
+    <label className="flex items-center space-x-3 text-sm">
       <input
-        className={inputClass}
-        placeholder="Enter account holder name"
-        value={formData.account_holder_name || ""}
-        onChange={(e) => setFormData({ ...formData, account_holder_name: e.target.value })}
+        type="checkbox"
+        checked={formData.terms_1 || false}
+        onChange={(e) => {
+          setFormData({ ...formData, terms_1: e.target.checked });
+          setErrors((prev) => ({ ...prev, terms_1: "" }));
+        }}
       />
+      <span>I agree to the Terms & Conditions</span>
+    </label>
+    {errors.terms_1 && (
+      <p className="text-red-500 text-xs ml-6">Required</p>
+    )}
+  </div>
 
-      <label className="block text-sm font-medium">Account Number</label>
+  <div>
+    <label className="flex items-center space-x-3 text-sm">
       <input
-        className={inputClass}
-        placeholder="Enter account number"
-        value={formData.account_number || ""}
-        onChange={(e) => setFormData({ ...formData, account_number: e.target.value })}
+        type="checkbox"
+        checked={formData.terms_2 || false}
+        onChange={(e) => {
+          setFormData({ ...formData, terms_2: e.target.checked });
+          setErrors((prev) => ({ ...prev, terms_2: "" }));
+        }}
       />
+      <span>I accept the Privacy Policy</span>
+    </label>
+    {errors.terms_2 && (
+      <p className="text-red-500 text-xs ml-6">Required</p>
+    )}
+  </div>
 
-      <label className="block text-sm font-medium">Bank Name</label>
+  <div>
+    <label className="flex items-center space-x-3 text-sm">
       <input
-        className={inputClass}
-        placeholder="Enter bank name"
-        value={formData.bank_name || ""}
-        onChange={(e) => setFormData({ ...formData, bank_name: e.target.value })}
+        type="checkbox"
+        checked={formData.terms_3 || false}
+        onChange={(e) => {
+          setFormData({ ...formData, terms_3: e.target.checked });
+          setErrors((prev) => ({ ...prev, terms_3: "" }));
+        }}
       />
-
-      <label className="block text-sm font-medium">Currency</label>
-      <select
-        className={inputClass}
-        value={formData.currency || ""}
-        onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
-      >
-        <option value="">Select currency</option>
-        <option value="eur">EUR</option>
-        <option value="usd">USD</option>
-        <option value="inr">INR</option>
-      </select>
-
-      <label className="block text-sm font-medium">Country of bank account</label>
-      <select
-        className={inputClass}
-        value={formData.bank_country || ""}
-        onChange={(e) => setFormData({ ...formData, bank_country: e.target.value })}
-      >
-        <option value="">Select country</option>
-        <option value="ie">Ireland</option>
-        <option value="us">United States</option>
-        <option value="in">India</option>
-      </select>
-
-      <label className="block text-sm font-medium">IBAN</label>
-      <input
-        className={inputClass}
-        placeholder="Enter your IBAN"
-        value={formData.iban || ""}
-        onChange={(e) => setFormData({ ...formData, iban: e.target.value })}
-      />
-
-      <label className="block text-sm font-medium">Confirm IBAN</label>
-      <input
-        className={inputClass}
-        placeholder="Confirm your IBAN"
-        value={formData.confirm_iban || ""}
-        onChange={(e) => setFormData({ ...formData, confirm_iban: e.target.value })}
-      />
+      <span>I confirm all information provided is correct</span>
+    </label>
+    {errors.terms_3 && (
+      <p className="text-red-500 text-xs ml-6">Required</p>
+    )}
+  </div>
+</div>
 
       <button
         onClick={handleSave}
-        className="w-full bg-[#4A3AFF] text-white py-3 rounded-lg"
+        className="w-full bg-[#4A3AFF] text-white py-3 rounded"
       >
         Save →
       </button>
+
     </div>
   );
 }
