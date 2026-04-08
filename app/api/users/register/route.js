@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import pool from "@/lib/db";
+import bcrypt from "bcrypt";  
 
 export async function POST(req) {
   try {
@@ -17,11 +18,13 @@ export async function POST(req) {
       );
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const result = await pool.query(
       `INSERT INTO users (first_name, email, password)
        VALUES ($1, $2, $3)
        RETURNING id, first_name, email`,
-      [name, email, password]
+      [name, email, hashedPassword]
     );
 
     return NextResponse.json(
@@ -34,6 +37,9 @@ export async function POST(req) {
 
   } catch (err) {
     console.error("REGISTER ERROR:", err);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Server error" },
+      { status: 500 }
+    );
   }
 }

@@ -31,8 +31,8 @@ export default function AuthPage() {
         return;
       }
 
-      localStorage.setItem("user", JSON.stringify(data.user));
       router.push("/multistepform");
+      router.refresh();
 
     } catch (err) {
       setMessage("Server error");
